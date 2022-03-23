@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="rupiah">
+    <input type="number" id="rupiax">
+    <p id="rupias"></p>
+   
+    <script type="text/javascript">
+
+        var rupiah = document.getElementById('rupiah');
+        var rupiax = document.getElementById('rupiax');
+
+        rupiah.addEventListener('change',function(e){            
+            originalText = rupiah.value;
+            removedDotText = originalText.split(".").join("");
+            removedSpacesText = removedDotText.split(" ").join("");
+            removedRPText = removedSpacesText.replace('Rp', '');
+            var harganya = parseFloat(removedRPText)
+            rupiax.value = harganya;
+        })
+
+        rupiah.addEventListener('keyup',function(e){
+            rupiah.value = formatRupiah(this.value, 'Rp. ');
+        })
+
+        function formatRupiah(angka, prefix){
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if(ribuan){
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
+    </script>
+</body>
+</html>
